@@ -1,0 +1,54 @@
+import csv
+
+products = []
+
+
+try:
+
+    f = open("products.csv", "r", encoding="utf-8")
+
+    reader = csv.reader(f)
+
+    for row in reader:
+        products.append(row)
+
+    f.close()
+
+except:
+    print("Файл будет создан")
+
+
+
+name = input("Название: ")
+price = input("Цена: ")
+count = input("Количество: ")
+
+products.append([name, price, count])
+
+
+
+search = input("Поиск товара: ")
+
+for p in products:
+
+    if p[0] == search:
+        print("Найдено:", p)
+
+
+
+total = 0
+
+for p in products:
+    total = total + int(p[1]) * int(p[2])
+
+print("Общая стоимость:", total)
+
+
+
+f = open("products.csv", "w", encoding="utf-8", newline="")
+
+writer = csv.writer(f)
+
+writer.writerows(products)
+
+f.close()
