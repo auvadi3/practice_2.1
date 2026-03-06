@@ -1,0 +1,117 @@
+import json
+import os
+
+FILE_NAME = "library.json"
+
+
+def load_books():
+    if not os.path.exists(FILE_NAME):
+        return []
+    f = open(FILE_NAME, "r", encoding="utf-8")
+    books = json.load(f)
+    f.close()
+    return books
+
+
+def save_books(books):
+    f = open(FILE_NAME, "w", encoding="utf-8")
+    json.dump(books, f, ensure_ascii=False, indent=4)
+    f.close()
+
+
+def show_books(books):
+    if len(books) == 0:
+        print("Книг нет.")
+    for book in books:
+        print(book)
+
+
+def search_book(books):
+    text = input("Введите автора или название: ")
+    for book in books:
+        if text.lower() in book["title"].lower() or text.lower() in book["author"].lower():
+            print(book)
+
+
+def add_book(books):
+    new_id = 1
+    if len(books) > 0:
+        new_id = books[-1]["id"] + 1
+
+    title = input("Название: ")
+    author = input("Автор: ")
+    year = int(input("Год: "))
+
+    book = {
+        "id": new_id,
+        "title": title,
+        "author": author,
+        "year": year,
+        "available": True
+    }
+
+    books.append(book)
+    save_books(books)
+    print("Книга добавлена.")
+
+
+def change_status(books):
+    id_num = int(input("Введите ID книги: "))
+    for book in books:
+        if book["id"] == id_num:
+            book["available"] = not book["available"]
+            save_books(books)
+            print("Статус изменен.")
+            return
+    print("Книга не найдена.")
+
+
+def delete_book(books):
+    id_num = int(input("Введите ID для удаления: "))
+    for book in books:
+        if book["id"] == id_num:
+            books.remove(book)
+            save_books(books)
+            print("Книга удалена.")
+            return
+    print("Книга не найдена.")
+
+
+def export_available(books):
+    f = open("available_books.txt", "w", encoding="utf-8")
+    for book in books:
+        if book["available"]:
+            f.write(book["title"] + " - " + book["author"] + "\n")
+    f.close()
+    print("Экспорт завершен.")
+
+
+while True:
+    books = load_books()
+
+    print("\n1 - Показать все книги")
+    print("2 - Поиск")
+    print("3 - Добавить книгу")
+    print("4 - Изменить статус")
+    print("5 - Удалить книгу")
+    print("6 - Экспорт доступных")
+    print("0 - Выход")
+
+    choice = input("Выберите действие: ")
+
+    if choice == "1":
+        show_books(books)
+    elif choice == "2":
+        search_book(books)
+    elif choice == "3":
+        add_book(books)
+    elif choice == "4":
+        change_status(books)
+    elif choice == "5":
+        delete_book(books)
+    elif choice == "6":
+        export_available(books)
+    elif choice == "0":
+        break
+    else:
+        print("Неверный ввод.")
