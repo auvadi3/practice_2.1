@@ -1,0 +1,60 @@
+from datetime import datetime
+
+
+try:
+
+    f = open("calculator.log", "r")
+
+    lines = f.readlines()
+
+    f.close()
+
+    print("Последние операции:")
+
+    for line in lines[-5:]:
+        print(line)
+
+except:
+    print("Лог пуст")
+
+
+
+clear = input("Очистить лог? да/нет ")
+
+if clear == "да":
+
+    f = open("calculator.log", "w")
+    f.close()
+
+    print("Лог очищен")
+
+
+
+a = float(input("Первое число: "))
+b = float(input("Второе число: "))
+op = input("Операция + - * / : ")
+
+
+if op == "+":
+    result = a + b
+
+elif op == "-":
+    result = a - b
+
+elif op == "*":
+    result = a * b
+
+elif op == "/":
+    result = a / b
+
+print("Ответ:", result)
+
+
+
+f = open("calculator.log", "a")
+
+time = datetime.now()
+
+f.write(str(time) + " " + str(a) + op + str(b) + "=" + str(result) + "\n")
+
+f.close()
