@@ -1,0 +1,33 @@
+f = open("text.txt", "w", encoding="utf-8")
+
+f.write("Я люблю программирование\n")
+f.write("Python простой язык\n")
+f.write("Это учебная практика\n")
+f.write("Работа с файлами интересна\n")
+f.write("Последняя строка текста\n")
+
+f.close()
+
+
+f = open("text.txt", "r", encoding="utf-8")
+
+lines = f.readlines()
+
+f.close()
+
+print("Строк:", len(lines))
+
+words = 0
+
+for line in lines:
+    words = words + len(line.split())
+
+print("Слов:", words)
+
+longest = ""
+
+for line in lines:
+    if len(line) > len(longest):
+        longest = line
+
+print("Самая длинная строка:", longest)
